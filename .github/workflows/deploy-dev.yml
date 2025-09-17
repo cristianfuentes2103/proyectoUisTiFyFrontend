@@ -1,0 +1,13 @@
+name: Frontend Deploy
+
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  ftp-deploy-dev:
+    uses: ./.github/workflows/ftp-deploy.yml
+    secrets: inherit
+    with:
+      environment: dev
+      local-dir: frontendVersion1/
