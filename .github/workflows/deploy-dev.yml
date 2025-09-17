@@ -1,11 +1,11 @@
-name: Frontend Deploy
+name: Frontend Deploy Dev
 
 on:
   push:
     branches: [ develop ]
 
 jobs:
-  ftp-deploy-dev:
+  deploy-dev:
     uses: ./.github/workflows/ftp-deploy.yml
     secrets: inherit
     with:
