@@ -34,7 +34,7 @@ jobs:
       - name: Quality Gate
         uses: SonarSource/sonarqube-quality-gate-action@v1
         with:
-          scanMetadataReportFile: frontendVersion1/.scannerwork/report-task.txt
+          scanMetadataReportFile: .scannerwork/report-task.txt
         env:
           SONAR_HOST_URL: ${{ env.SONAR_HOST_URL }}
           SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
