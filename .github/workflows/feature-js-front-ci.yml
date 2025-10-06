@@ -1,0 +1,40 @@
+name: Feature Front CI (Sonar)
+
+on:
+  push:
+    branches: ['feature/**']
+
+jobs:
+  sonar:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontendVersion1
+    env:
+      SONAR_HOST_URL: https://sonarqube.uistify.site
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SONAR_PROJECT_KEY: uistify_js_frontend
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+
+      - name: SonarQube Scan (CLI)
+        uses: SonarSource/sonarqube-scan-action@v2
+        with:
+          projectBaseDir: .
+          args: >
+            -Dsonar.host.url=${{ env.SONAR_HOST_URL }}
+            -Dsonar.login=${{ env.SONAR_TOKEN }}
+            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
+            -Dsonar.projectName=${{ env.SONAR_PROJECT_KEY }}
+            -Dsonar.sources=.
+            -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.exclusions=**/node_modules/**,**/*.map,**/*.min.js,**/dist/**,**/build/**,**/vendor/**,**/*.png,**/*.jpg,**/*.svg,**/*.ico,**/*.css.map
+
+      - name: Quality Gate
+        uses: SonarSource/sonarqube-quality-gate-action@v1
+        with:
+          scanMetadataReportFile: .scannerwork/report-task.txt
+        env:
+          SONAR_HOST_URL: ${{ env.SONAR_HOST_URL }}
+          SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
