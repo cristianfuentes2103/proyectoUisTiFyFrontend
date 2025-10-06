@@ -124,6 +124,11 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+    padding: 2rem;
+    box-sizing: border-box;
 }
 
 /* Contenedor del logo */
@@ -197,15 +202,6 @@ body {
 }
 
 /*Vista formulario para login y registro*/
-
-#auth-view {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 4rem;
-    padding: 2rem;
-    box-sizing: border-box;
-}
 
 #auth-view form {
     display: flex;
