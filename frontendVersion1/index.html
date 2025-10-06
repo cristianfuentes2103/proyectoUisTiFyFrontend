@@ -1,1 +1,103 @@
-<h1>Hola mundo</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UistiFy</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Vista para Login y Registro -->
+        <div id="auth-view" class="view">
+            <!-- Contenedor para el LOGO de UisTiFy-->
+            <div class="logo-container" title="Logo de UistiFy">
+                <img src="img/UisTiFy.png" alt="Logo de UistiFy">
+            </div>
+            <!-- Contenedor para el Formulario de Login y Registro-->
+            <div class="form-container">
+                <!-- Contenedor para la mascota de UistiFy -->
+                <div class="yeti-container">
+
+                    <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048">
+                        <title>mascotaUisTiFy</title>
+                        <use id="Background" href="#img1" x="312" y="250" />
+                        <g id="eyes">
+                            <!-- Ojo Izquierdo -->
+                            <g id="eye-left">
+                                <!--Circulo del ojo-->
+                                <circle cx="630" cy="1000" r="100" fill="white" />
+                                <!-- Esclerótica -->
+                                <circle cx="630" cy="1000" r="90" fill="#AED6F1" /> <!-- Iris azul -->
+                                <circle id="pupil-left" cx="630" cy="1000" r="50" fill="#2C3E50" /> <!-- Pupila -->
+                                <circle cx="590" cy="960" r="30" fill="white" /> <!-- Brillo -->
+                            </g>
+                            <!-- Ojo Derecho -->
+                            <g id="eye-right">
+                                <circle cx="970" cy="1030" r="100" fill="white" />
+                                <!-- Esclerótica -->
+                                <circle cx="970" cy="1030" r="90" fill="#AED6F1" /> <!-- Iris azul -->
+                                <circle id="pupil-right" cx="970" cy="1030" r="50" fill="#2C3E50" /> <!-- Pupila -->
+                                <circle cx="930" cy="980" r="30" fill="white" /> <!-- Brillo -->
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- ######### Formulario de Login ########## -->
+                <form id="login-form" alt="Formulario de Login">
+                    <h2>Iniciar Sesión</h2>
+                    <input type="email" id="login-email" placeholder="Correo electrónico" required>
+                    <input type="password" id="login-password" placeholder="Contraseña" required>
+                    <button class="button" type="submit">
+                        Ingresar a UistiFy
+                        <svg fill="currentColor" viewBox="0 0 24 24" class="icon">
+                            <path clip-rule="evenodd"
+                                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z"
+                                fill-rule="evenodd">
+                            </path>
+                        </svg>
+                    </button>
+                </form>
+
+                <!-- ######### Formulario de Registro (Estado Inicial Oculto) #########  -->
+                <form id="register-form" class="hidden">
+                    <h2>Crear Cuenta</h2>
+                    <input type="name" id="register-name" placeholder="Nombre" required>
+                    <input type="email" id="register-email" placeholder="Correo electrónico" required>
+                    <input type="password" id="register-password" placeholder="Contraseña" required>
+                    <button class="button" type="submit">
+                        Registrarse
+                        <svg fill="currentColor" viewBox="0 0 24 24" class="icon">
+                            <path clip-rule="evenodd"
+                                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z"
+                                fill-rule="evenodd">
+                            </path>
+                        </svg>
+                    </button>
+                </form>
+
+                <!-- Enlaces para alternar entre formularios de login y registro -->
+                <div class="toggle-container">
+                    <a href="#" id="show-register-link">¿No tienes cuenta? Regístrate</a>
+                    <a href="#" id="show-login-link" class="hidden">¿Ya tienes cuenta? Inicia sesión</a>
+                </div>
+
+                <p id="error-message" class="error"></p>
+            </div>
+        </div>
+    </div>
+
+
+    <footer id="main-footer" class="footer">
+        <p>
+            © 2025 UisTify Todos los derechos reservados.
+        </p>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
