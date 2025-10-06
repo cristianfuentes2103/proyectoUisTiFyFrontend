@@ -1,0 +1,386 @@
+:root {
+    --primary-color: rgb(0, 183, 255);
+    --dark-backgound-color: #000;
+    --dark-color: #121212;
+    --light-dark-color: #282828;
+    --text-color: #fff;
+    --text-secondary-color: #B3B3B3;
+    --dark-form-color: #1a1a1a;
+}
+
+/*Fuentes de SpotiFy*/
+@font-face {
+    font-family: "CircularStd";
+    src: url("../fonts/CircularStd-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "CircularStd";
+    src: url("../fonts/CircularStd-Book.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "CircularStd";
+    src: url("../fonts/CircularStd-Light.woff2") format("woff2");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "CircularStd";
+    src: url("../fonts/CircularStd-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "CircularStd";
+    src: url("../fonts/CircularStd-Black.woff2") format("woff2");
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ====================================== */
+/* === Estilos generales del proyecto === */
+/* ====================================== */
+
+
+html {
+    overflow: auto;
+}
+
+body {
+    font-family: "CircularStd", system-ui, sans-serif;
+    background-color: var(--dark-backgound-color);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.165) 0%,
+            rgb(0, 0, 0) 100%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    display: grid;
+    min-height: 100dvh;
+    overflow: hidden;
+    grid-template-rows: auto 1fr auto;
+    overflow-x: hidden;
+}
+
+/*Contenedor principal*/
+.container {
+    margin: 0px auto 0;
+    background: var(--dark-color);
+    background-image: linear-gradient(rgb(0, 0, 0) 0%,
+            rgba(255, 255, 255, 0.05) 100%);
+    width: 700px;
+    overflow: auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(20, 20, 20, 0.5);
+}
+
+.footer {
+    background: var(--dark-color);
+    background-image: linear-gradient(rgba(0, 0, 0, 0) 0%,
+            rgba(255, 255, 255, 0) 100%);
+    margin-top: 20px;
+    width: 100%;
+    padding: 1rem 0 1.5rem 0;
+    padding-top: 30px;
+    text-align: center;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--text-secondary-color);
+}
+
+/*Vista para Login y Registro*/
+.view {
+    width: 100%;
+    height: 100%;
+}
+
+/*Ocultar etiquetas con class="hidden"*/
+.hidden {
+    display: none !important;
+}
+
+/* ====================================== */
+/* === Estilos Vista login y registro=== */
+/* ====================================== */
+
+/*Vista para Login y Registro*/
+#auth-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Contenedor del logo */
+.logo-container {
+    max-width: 450px;
+    animation:
+        /* Animación de entrada del logo */
+        fadeInLogo 1.5s ease-out forwards,
+        /* Animación de movimiento del logo*/
+        subtleRock 4s ease-in-out 1.5s infinite alternate;
+}
+
+/* Imagen del logo responsiva*/
+.logo-container img {
+    width: 100%;
+    height: auto;
+}
+
+@keyframes fadeInLogo {
+    from {
+        opacity: 0;
+        transform: translateX(-30px) rotate(0deg);
+        /* Rotación inicial */
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0) rotate(0deg);
+        /* Mantener rotación */
+    }
+}
+
+@keyframes subtleRock {
+    from {
+        transform: rotate(0deg);
+        /* Empieza inclinado 0 grados a la izquierda */
+    }
+
+    to {
+        transform: rotate(4deg);
+        /* Termina inclinado 4 grados a la derecha */
+    }
+}
+
+/*Contenedor de login y registro*/
+.form-container {
+    position: relative;
+    width: 300px;
+    border-radius: 12px;
+    background-color: var(--dark-form-color);
+    border: 1px solid #444;
+    padding: 2rem;
+    padding-top: 6rem;
+    z-index: 1;
+}
+
+/*Contenedor mascota de UisTiFy*/
+.yeti-container {
+    background: url("../svg/mascotaUisTiFy.svg") no-repeat center;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    height: 300px;
+    width: 300px;
+}
+
+#pupil-left,
+#pupil-right {
+    transition: transform 0.1s ease-out;
+}
+
+/*Vista formulario para login y registro*/
+
+#auth-view {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+#auth-view form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+#auth-view h2 {
+    text-align: center;
+    color: var(--primary-color)
+}
+
+#auth-view input {
+    padding: 0.8rem;
+    border-radius: 4px;
+    border: none;
+    background-color: #404040;
+    color: var(--text-color);
+}
+
+#auth-view button {
+    padding: 0.5rem;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#auth-view button:hover {
+    transform: scale(1.05);
+}
+
+/* Estilo de botón de Uiverse.io by jackson_2777 */
+.button {
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    padding-block: 0.5rem;
+    padding-inline: 1.25rem;
+    background-color: rgb(108, 169, 210);
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffff;
+    gap: 10px;
+    font-weight: bold;
+    border: 3px solid #00c0d14d;
+    outline: none;
+    overflow: hidden;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s ease-in-out;
+}
+
+.button:hover {
+    transform: scale(1.05);
+    border-color: #fff9;
+}
+
+.button:hover .icon {
+    transform: translate(4px);
+}
+
+.button:hover::before {
+    animation: shine 1.5s ease-out infinite;
+}
+
+.button::before {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 100%;
+    top: 0;
+    left: -100px;
+    opacity: 0.6;
+}
+
+@keyframes shine {
+    0% {
+        left: -100px;
+    }
+
+    60% {
+        left: 100%;
+    }
+
+    to {
+        left: 100%;
+    }
+}
+
+/*Contenedor Enlaces*/
+.toggle-container {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.toggle-container a {
+    color: var(--text-secondary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.toggle-container a:hover {
+    text-decoration: underline;
+    color: var(--primary-color);
+}
+
+.error {
+    color: #ff6161;
+    text-align: center;
+    height: 1em;
+}
+
+/* ================================= */
+/* === Borde de neón formulario === */
+/* ================================*/
+
+.form-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background-image: linear-gradient(45deg,
+            hsl(316, 81%, 50%),
+            hsl(271, 81%, 50%),
+            hsl(226, 81%, 50%),
+            hsl(181, 81%, 50%),
+            hsl(136, 81%, 50%),
+            hsl(91, 81%, 50%));
+    background-size: 200% 200%;
+    padding: 7px;
+    filter: blur(3px);
+    animation: move-gradient-border 3s linear infinite;
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+}
+
+/*Movimiento del borde de neón*/
+@keyframes move-gradient-border {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    25% {
+        background-position: 50% 100%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    75% {
+        background-position: 50% 0%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
