@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', () =>{
 
     // Constantes y URLS 
-    const API_BASE_URL = 'https://apidev.uistify.site/api'; //<- Backend
+    
     // =====================
     // Selectores del DOM 
     // =====================
