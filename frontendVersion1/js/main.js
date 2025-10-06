@@ -3,28 +3,18 @@ document.addEventListener('DOMContentLoaded', () =>{
 
     // Constantes y URLS 
     const API_BASE_URL = 'https://apidev.uistify.site/api'; //<- Backend
-    const REGISTER_URL = `${API_BASE_URL}/authentication/signup`; // <- endpoint registro
-    const LOGIN_URL = `${API_BASE_URL}/authentication/login`; // <- endpoint login
     // =====================
     // Selectores del DOM 
     // =====================
-    // Vistas Principales 
-    const allViews = document.querySelectorAll('.view');
-
     // Elementos de la vista de Authentication
     const loginForm = document.getElementById('login-form');
-    const loginEmail = document.getElementById('login-email');
-    const loginPassword = document.getElementById('login-password');
     const registerForm = document.getElementById('register-form');
-    const registerName = document.getElementById('register-name');
-    const registerEmail = document.getElementById('register-email');
-    const registerPassword = document.getElementById('register-password');
     const showRegisterLink = document.getElementById('show-register-link');
     const showLoginLink = document.getElementById('show-login-link');
     const errorMessage = document.getElementById('error-message');
     const pupilLeft = document.getElementById('pupil-left');
     const pupilRight = document.getElementById('pupil-right');
-    const mainFooter = document.getElementById('main-footer');
+
 
     // =============================
     // Navegación y manejo de vistas
