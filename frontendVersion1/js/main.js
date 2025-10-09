@@ -19,14 +19,12 @@ document.addEventListener('DOMContentLoaded', () =>{
 
     // Vistas Principales 
     const allViews = document.querySelectorAll('.view');
-    //const contentArea = document.querySelector('.content-area');
 
     // Vistas Contenido Prrincipal
     //const homeViewContent = document.getElementById('home-view-content');
 
     //Selectores de la sidebar
     const homeBtn = document.querySelector('.main-nav .icon-home').closest('a');
-    //const searchBtn = document.querySelector('.main-nav .icon-search').closest('a');
     const sidebarAuthBlock = document.getElementById('sidebar-auth-content');
     const sidebarLibraryContent = document.getElementById('sidebar-library-content');
 
@@ -271,6 +269,7 @@ document.addEventListener('DOMContentLoaded', () =>{
             catch(error){
                 localStorage.removeItem('authToken');
                 updateUserUI(false);
+                console.log(error);
             }
         }else{
             updateUserUI(false);
