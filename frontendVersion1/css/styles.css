@@ -6,6 +6,7 @@
     --text-color: #fff;
     --text-secondary-color: #B3B3B3;
     --dark-form-color: #1a1a1a;
+    --color-standard: #040404;
 }
 
 /*Fuentes de SpotiFy*/
@@ -124,6 +125,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    display: flex;
     justify-content: center;
     gap: 4rem;
     padding: 2rem;
@@ -378,4 +380,363 @@ body {
     100% {
         background-position: 0% 50%;
     }
+}
+
+/*Botón de Regresar a Home en Auth*/
+
+.main-header-auth{
+    display: flex;
+    justify-content: center;
+    
+}
+.auth-btn{
+    background: rgb(108, 169, 210); color: #f9f9f9;  width: 100px; height: 32px; cursor: pointer;
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    font-size: 0.8rem;
+    border: 2px solid var(--primary-color); 
+}
+
+
+.auth-btn:hover {
+  transform: scale(1.05);
+  border-color: #fff9;
+ 
+}
+
+/* ======================================================= */
+/* ===== ESTILOS PARA LA VISTA PRINCIPAL (MAIN VIEW) ===== */
+/* ======================================================= */
+
+#main-view{
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    grid-template-rows: 1fr auto;
+    grid-template-areas:
+        "sidebar main"
+        "player player";
+    height: 80vh;
+    width: 100vw;
+    background-color: var(--dark-backgound-color);
+}
+
+/* 1. SIDEBAR*/
+.sidebar{
+    grid-area: sidebar;
+    background-color: var(--color-standard);
+    padding-left: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: 91.4vh;
+}
+
+/* Sidebar para home, search y biblioteca */
+.sidebar-block{
+    background-color: var(--dark-color);
+    padding: 15px 15px 15px 5px;
+    border-radius: 8px;
+    transition: all 0.3s ease; 
+}
+
+/*Sidebar para los botones de autenticación*/
+.user-auth{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0px;
+    background-color: var(--dark-backgound-color);
+    border-radius: 8px;
+}
+
+/* Botones de autenticación en view main*/
+.auth-buttons{
+    display: flex;
+    gap: 0.5rem;
+    padding-bottom: 0rem;
+    padding-top: 8px;
+}
+
+/* Botones de Iniciar sesión y Registrarse */
+.btn {
+   flex-grow: 1;
+   padding: 0.8rem;
+   border: none;
+   border-radius: 20px;
+   font-weight: 800;
+   cursor: pointer;
+}
+ 
+/* Botón de Iniciar sesión*/
+.btn-primary {
+    background-color: var(--text-color);
+    color: var(--dark-backgound-color);
+}
+
+/*Botón de Registrarse*/
+.btn-secondary {
+    background-color: var(--light-dark-color);
+    color: var(--text-color);
+}
+
+/* Navegación principal */
+.main-nav{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Elemento de la navegación principal */
+.nav-item{
+    color: var(--text-secondary-color);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding-left: 15px;
+}
+
+.nav-item.active{
+    color: var(--text-color);
+}
+
+.nav-item i {
+    font-size: 1.5rem;
+}
+
+/* Vista para las playlists */
+
+.user-playlists{
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 6px;
+    scrollbar-gutter: stable;
+}
+
+/* 2. CONTENIDO PRINCIPAL */
+
+.main-content{
+    grid-area: main;
+    background: linear-gradient(180deg, #226E9D 0%, #18181B 100%);
+    border-radius: 8px;
+    margin: 0.5rem;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* Contenedor dentro de la vista principal */
+.content-area{
+    padding: 0 1.5rem;
+}
+
+
+/* 3. REPRODUCTO DE MÚSICA */
+.player-bar{
+    grid-area: player;
+    background-color: var(--dark-backgound-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+}
+
+.player-controls{
+    display: flex;
+    gap: 1rem;
+}
+
+.player-btn{
+    background: var(--text-color);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.progress-bar{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 40%;
+}
+
+.progress-line{
+    flex-grow: 1;
+    height: 4px;
+    background-color: #404040;
+    border-radius: 2px;
+}
+
+/*Esconder user-auth para usuarios logueados*/
+
+.user-auth.empty {
+    padding: 0;
+    border: none; 
+    margin: 0; 
+}
+
+/* Biblioteca contenedor sidebar */
+.library-header {
+    padding-left: 15px;
+    align-items: center;
+    display: flex;
+    gap: 15px;
+}
+/*Título de la biblioteca*/
+.library-title {
+    color: #8D8D8D;
+    align-items: center;
+    display: flex;
+    font-weight: bold;
+    font-size: medium;
+}
+
+/*Botón de crear playlists*/
+.btn-create {
+    flex-grow: 0.8;
+    padding: 0.6rem;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    gap: 7px;
+    align-items: center;
+}
+
+.btn-icon{
+    background-color: var(--light-dark-color);
+    color: var(--text-color);
+    font-weight: 500;
+    font-size: large;
+}
+
+/* ======================================================= */
+/* ===== Contenedor para Cerrar Sesión ===================*/
+/* ======================================================= */
+
+.main-header{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    padding-right: 24px;
+}
+
+.user-profile-menu{
+    margin: 5px 0px 0px 0px;
+    position: relative;
+    background-color: #3e3e3e;
+    border-radius: 50%;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-avatar-btn{
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0px;
+    overflow: hidden;
+    background-color: var(--dark-backgound-color);
+}
+.logout-dropdown{
+    position: absolute;
+    top: 105%;
+    right: 0;
+    background-color: #2c2c2c;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+    overflow: hidden;
+    min-width: 190px;
+}
+
+.logout-btn{
+    background-color: transparent;
+    border: none;
+    color: var(--text-color);
+    width: 96%;
+    padding: 10px 10px;
+    margin: 4px;
+    text-align: left;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    border-radius: 3px;
+}
+
+.logout-btn:hover{
+    background-color: #3c3c3c;
+}
+/* ===================================================================== */
+/* ===== Contenedor para las playlists en la sidebar de biblioteca ===== */
+/* ===================================================================== */
+#playlist-container {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+/* ======================================================= */
+/* ===== ÍCONOS UTILIZADOS =============================== */
+/* ======================================================= */
+
+.icon-arrow-left-auth{
+  margin-right: 10px;
+  width: 17px;                
+  height: 17px;
+  background: url("../icons/ArrowLeftHome.svg");
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.icon-home {
+  width: 30px;  
+  height: 30px;
+  background: url("../icons/Home.svg") no-repeat center;
+  background-size: contain; 
+ 
+}
+
+.icon-search {
+  width: 30px;   
+  height: 30px;
+  background: url("../icons/Search.svg") no-repeat center;
+  background-size: contain; 
+}
+
+.icon-library {
+  width: 30px;  
+  height: 30px;
+  background: url("../icons/Library.svg") no-repeat center;
+  background-size: contain; 
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;   
+}
+
+.icon-yeti-cs {
+  margin-top: 3px;
+  width: 30px;   
+  height: 30px;
+  background: url("../img/Yeti.png") no-repeat center;
+  background-size: contain; 
+  display: inline-block;
 }
