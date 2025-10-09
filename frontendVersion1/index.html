@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="icons/YetiIcon.svg" type="image/x-icon">
     <title>UistiFy</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -53,7 +54,7 @@
                     <input type="email" id="login-email" placeholder="Correo electrónico" required>
                     <input type="password" id="login-password" placeholder="Contraseña" required>
                     <button class="button" type="submit">
-                        Ingresar a UistiFy
+                        Ingresar a UisTiFy
                         <svg fill="currentColor" viewBox="0 0 24 24" class="icon">
                             <path clip-rule="evenodd"
                                 d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z"
@@ -87,10 +88,97 @@
                 </div>
 
                 <p id="error-message" class="error"></p>
+
+                <div class="main-header-auth">
+                    <div class="navigation-arrows-auth">
+                        <button title="Regresar a Home" class="auth-btn" id="back-to-home-btn">
+                            <i class="icon-arrow-left-auth"></i>Home
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- ######### Vista principal de la aplicación (Main View) Oculta inicialmente ######### -->
+    <div id="main-view" class="view hidden">
+        <!-- 1. BARRA LATERAL (SIDEBAR) -->
+        <aside class="sidebar">
+            <!-- Bloque 1: Autenticación -->
+            <div class="sidebar-block user-auth empty">
+                <!-- Contenido para usuarios no logueados -->
+                <div class="auth-buttons" id="sidebar-auth-content">
+                    <button id="go-to-login-btn" class="btn btn-primary">Iniciar Sesión</button>
+                    <button id="go-to-register-btn" class="btn btn-secondary">Registrarse</button>
+                </div>
+            </div>
+
+            <!--Bloque 2: Navegación (Siempre visible) -->
+            <nav class="sidebar-block main-nav">
+                <a href="#" class="nav-item">
+                    <i class="icon-home"></i> <span>Home</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="icon-search"></i> <span>Buscar</span>
+                </a>
+            </nav>
+
+            <!-- Bloque 3: Biblioteca (el contenido cambia) -->
+            <div class="sidebar-block user-playlists">
+                <!-- Cotenido para usuarios logueados (inicialmente oculto) -->
+                <div id="sidebar-library-content" class="hidden">
+                    <div class="library-header">
+                        <i class="icon-library"></i> <span class="library-title">Tu biblioteca</span>
+                        <button id="create-playlist-btn" class="btn-create btn-icon">
+                            <svg width="22" height="21" viewBox="0 0 24 23" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12.2841 -0.00683594V23.0001" stroke="#626262" stroke-width="3" />
+                                <path d="M0 11.6562H24" stroke="#626262" stroke-width="3" />
+                            </svg>Crear lista
+                        </button>
+                    </div>
+                    <div id="playlist-container">
+                        <!-- Las playlists se cargan aquí -->
+                    </div>
+                </div>
+                <!-- Los usuarios no logueaedos simplemente verán este bloque vacío -->
+            </div>
+        </aside>
+
+        <!-- 2. CONTENIDO PRINCIPAL -->
+        <div class="main-content">
+            <!-- Cabecera Principal para Botón de Cerrar Sesión-->
+            <header class="main-header">
+                <div id="user-profile-menu" class="user-profile-menu hidden">
+                    <button id="user-avatar-btn" class="user-avatar-btn">
+                        <i class="icon-yeti-cs" alt="Cerrar Sesión"></i>
+                    </button>
+                    <div id="logout-dropdown" class="logout-dropdown hidden">
+                        <button id="logout-btn" class="logout-btn">Cerrar Sesión</button>
+                    </div>
+                </div>
+            </header>
+            <main id="home-view-content" class="content-area">
+                <h1 class="welcome-message">Bienvenido, Buenos días</h1>
+                <!-- Acá se cargan los Álbumes-->
+            </main>
+        </div>
+
+        <!-- 3. REPRODUCTOR DE MÚSICA -->
+        <footer class="player-bar">
+            <div class="player-controls">
+                <button class="player-btn">
+                    <i class="icon-play"></i>
+                </button>
+            </div>
+            <div class="progress-bar">
+                <span>00:00</span>
+                <div class="progress-line"></div>
+                <span>4:00</span>
+            </div>
+
+        </footer>
+    </div>
 
     <footer id="main-footer" class="footer">
         <p>
