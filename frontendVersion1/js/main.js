@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 'use strict';
 document.addEventListener('DOMContentLoaded', () =>{
 
@@ -5,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () =>{
     // ============ URLs de la API ================================================
     // ============================================================================
 
-    const API_BASE_URL = 'http://10.8.0.1:8082/api'; //<- Backend
+     //<- Backend
     const REGISTER_URL = `${API_BASE_URL}/authentication/signup`; // <- endpoint registro
     const LOGIN_URL = `${API_BASE_URL}/authentication/login`; // <- endpoint login
 
