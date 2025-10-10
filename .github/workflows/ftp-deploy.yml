@@ -25,7 +25,7 @@ jobs:
       - name: Variable API
         shell: bash
         env:
-          API_URL: ${{ secrets.API_URL }}
+          API_URL: ${{ vars.API_URL }}
         run: |
           set -e
           FILE="${{ inputs.local-dir }}/config.js"
