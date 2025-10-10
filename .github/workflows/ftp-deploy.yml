@@ -22,6 +22,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Variable API
+        shell: bash
+        env:
+          API_URL: ${{ secrets.API_URL }}
+        run: |
+          set -e
+          FILE="${{ inputs.local-dir }}/config.js"
+          SAFE_API="${API_URL//&/\\&}"
+          sed -i 's|\${API_URL}|'"$SAFE_API"'|g' "$FILE"
+
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
