@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '../config.js';
+import { API_BASE_URL } from '../config.js'; //<- Backend
 
 document.addEventListener('DOMContentLoaded', () =>{
 
@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () =>{
     // ============ URLs de la API ================================================
     // ============================================================================
 
-     //<- Backend
+     
     const REGISTER_URL = `${API_BASE_URL}/authentication/signup`; // <- endpoint registro
     const LOGIN_URL = `${API_BASE_URL}/authentication/login`; // <- endpoint login
 
