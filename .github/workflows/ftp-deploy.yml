@@ -33,7 +33,7 @@ jobs:
           sed -i 's|\${API_URL}|'"$SAFE_API"'|g' "$FILE"
 
       - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server:   ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
@@ -43,6 +43,7 @@ jobs:
           local-dir: ${{ inputs.local-dir }}
           dangerous-clean-slate: false
           exclude: |
+            **/.vscode*
             **/.git*
             **/.github/**
             **/.DS_Store
