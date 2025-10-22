@@ -884,12 +884,11 @@ body {
     font-weight: 400;
 }
 
-.playlist-title {
+.playlist-title-h1 {
     padding: 10px 0px 0px 0px;
     font-weight: 900;
     margin: 8px 0;
     line-height: 1;
-    display: flex;
     font-size: clamp(2rem, 4vw, 4rem);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1708,14 +1707,6 @@ body {
     flex-direction: column;
 }
 
-.song-item-cover-container {
-    position: relative;
-    width: 45px;
-    height: 45px;
-    flex-shrink: 0;
-    transition: transform 0.3s ease;
-}
-
 .song-item-cover-container .song-item-play-btn {
     position: absolute;
     top: 50%;
@@ -1835,7 +1826,7 @@ body {
         cursor: not-allowed;
     }
 
-    olor: white;
+    color: white;
 }
 
 /* Cuando la lista del modal está cargando, deshabilita los clics en todos los items */
@@ -2013,7 +2004,6 @@ body {
     image-rendering: pixelated;
     background-repeat: no-repeat;
     background-position: center;
-    background-size: contain;
 }
 
 .icon-pause {
@@ -2024,7 +2014,6 @@ body {
     image-rendering: pixelated;
     background-repeat: no-repeat;
     background-position: center;
-    background-size: contain;
 }
 
 .icon-arrow-left {

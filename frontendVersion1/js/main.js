@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // =======================================================
     // ===== NAVEGACIÓN Y MANEJO DE VISTAS
     // =======================================================
-    
+
     //Muestra una vista de contenido específica, oculta las demás y actualiza el estado del botón "Atrás".
 
     function updateNavigationUI() {
@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Navega a una nueva vista de contenido, registrándola en el historial (ID de la vista a la que se va a navegar)
-     
+
     function navigateToNewView(viewId) {
         if (navigationHistory[navigationHistory.length - 1] === viewId) {
             return;
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Navega a la vista de Home, reseteando el historial.
-    
+
     function navigateHome() {
         navigationHistory = ['home-view-content'];
         updateNavigationUI();
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== FUNCIONES DE RENDERIZADO (UI)
     // =======================================================
 
-  // Carga una página de canciones desde la API y las añade al contenedor.
+    // Carga una página de canciones desde la API y las añade al contenedor.
 
     async function loadSongsPage() {
         // Si ya estamos cargando o si ya se cargaron todas las canciones, no hacemos nada.
@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         isLoading = true;
-        console.log(`Cargando página ${currentPage}...`); 
+        console.log(`Cargando página ${currentPage}...`);
 
         try {
             // Construimos la URL con los parámetros de paginación
@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderAllSongsInSearchView(songs, append = false) {
         if (!append) {
-            allSongsContainer.innerHTML = ''; 
+            allSongsContainer.innerHTML = '';
         }
 
         if (songs.length === 0 && !append) {
@@ -530,7 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function playSong(song) {
-        if (!song || !song.sourceUrl) {
+        if (!song?.sourceUrl) {
             console.error("No se puede reproducir: el objeto de la canción o la URL fuente no son válidos.");
             showToast('Esta canción no está disponible para reproducción.', 'error');
             return;
@@ -672,9 +672,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    
- // Genera una URL firmada (presigned URL) para un objeto de canción en MinIO. 
- // La clave del objeto guardada en la base de datos (ej: "song_9"). La URL completa y firmada, válida por 1 hora.
+
+    // Genera una URL firmada (presigned URL) para un objeto de canción en MinIO. 
+    // La clave del objeto guardada en la base de datos (ej: "song_9"). La URL completa y firmada, válida por 1 hora.
     function getPresignedUrl(objectKey) {
         if (!objectKey) {
             return ''; // Si no hay clave, devuelve una URL vacía.
@@ -684,7 +684,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const url = s3.getSignedUrl('getObject', {
                 Bucket: MINIO_BUCKET,
                 Key: objectKey,
-                Expires: 3600 
+                Expires: 3600
             });
             return url;
         } catch (error) {
@@ -723,19 +723,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // Si la respuesta es exitosa (ej. 200, 201, 204),
         // verificamos si tiene contenido antes de intentar parsearlo.
         const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-            // Solo si el servidor nos dice que hay JSON, lo parseamos.
+        if (contentType?.includes('application/json')) {
             return await response.json();
         } else {
-            // Si no hay cuerpo JSON (como en un 201 o 204),
-            // simplemente devolvemos null para indicar éxito sin datos.
             return null;
         }
     }
 
-    
-     // Muestra una notificación "toast" en la pantalla.
-     
+
+    // Muestra una notificación "toast" en la pantalla.
+
     function showToast(message, type = 'info', duration = 3000) {
         const container = document.getElementById('toast-container');
         if (!container) return;
@@ -1166,7 +1163,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 await apiFetch(`/playlists/${currentOpenPlaylistId}/songs/${songId}`, 'DELETE');
-                showToast('Canción eliminada de la playlist', 'success'); 
+                showToast('Canción eliminada de la playlist', 'success');
 
                 songItem.style.opacity = '0';
                 setTimeout(() => {
@@ -1257,7 +1254,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // Función apiFetch con el método DELETE.
             await apiFetch(`/playlists/${playlistIdToAction}`, 'DELETE');
-            showToast('Playlist eliminada con éxito', 'success'); 
+            showToast('Playlist eliminada con éxito', 'success');
 
             const playlistElement = playlistContainer.querySelector(`.playlist-item[data-playlist-id="${playlistIdToAction}"]`);
             if (playlistElement) {
@@ -1377,7 +1374,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePlayPauseIcon(false);
         setPlayerControlsEnabled(false);
         // 2. Renderizamos los álbumes de la home, que siguen usando datos locales del mockup.
-        if (window.UisTiFyData && window.UisTiFyData.allPlaylists) {
+        if (window.UisTiFyData?.allPlaylists) {
             renderAlbumShelves(window.UisTiFyData.allPlaylists);
         } else {
             console.error("Los datos de UisTiFy (para los álbumes) no se cargaron correctamente.");
