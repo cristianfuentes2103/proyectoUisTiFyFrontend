@@ -9,17 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const REGISTER_URL = `${API_BASE_URL}/auth/register`; // <- endpoint registro
     const LOGIN_URL = `${API_BASE_URL}/auth/login`; // <- endpoint login
-    // --- Configuración para MinIO ---
-    const MINIO_ENDPOINT = 'http://10.8.0.1:9002';
-    const MINIO_BUCKET = 'develop';
-    const s3 = new AWS.S3({
-        endpoint: MINIO_ENDPOINT,
-        accessKeyId: 'admin',
-        secretAccessKey: 'SuperSegura123!',
-        s3ForcePathStyle: true,
-        signatureVersion: 'v4',
-        region: 'us-east-1'
-    });
+
 
     // ============================================================================
     // ============ Fin URLs de la API ============================================
@@ -529,75 +519,131 @@ document.addEventListener('DOMContentLoaded', () => {
         icon.className = isPlaying ? 'icon-pause' : 'icon-play';
     }
 
+    async function refreshCurrentPlaylistView() {
+        // Si no hay ninguna playlist abierta, no hay nada que hacer.
+        if (!currentOpenPlaylistId) {
+            return;
+        }
+
+        try {
+            // 1. Volvemos a pedir los datos actualizados al backend.
+            const updatedPlaylist = await apiFetch(`/playlists/${currentOpenPlaylistId}`);
+
+            // 2. Actualizamos nuestra variable de estado principal.
+            currentPlaylistData = updatedPlaylist;
+
+            // 3. Re-renderizamos la lista de canciones en la UI.
+            renderSongsInPlaylistView(updatedPlaylist.songs);
+            updateSongItemIcons(); // Sincronizamos los iconos de play/pausa
+
+            // 4. Actualizamos la cola de reproducción si hay una canción sonando.
+            if (currentPlayingSong) {
+                currentQueue = updatedPlaylist.songs;
+                // Re-calculamos el índice de la canción actual en la nueva cola.
+                currentQueueIndex = currentQueue.findIndex(s => s.id === currentPlayingSong.id);
+            }
+
+        } catch (error) {
+            console.error("No se pudo refrescar la playlist:", error);
+            showToast("Error al actualizar la playlist.", 'error');
+        }
+    }
+
+    let currentObjectUrl = null;
+
     async function playSong(song) {
+        // 1. Verificación inicial de la canción.
         if (!song?.sourceUrl) {
-            console.error("No se puede reproducir: el objeto de la canción o la URL fuente no son válidos.");
+            console.error("No se puede reproducir: la canción no tiene una clave de objeto válida.");
             showToast('Esta canción no está disponible para reproducción.', 'error');
             return;
         }
-
-        // --- LÓGICA DE GESTIÓN DE LA COLA DE REPRODUCCIÓN ---
-
-        // Identifica la fuente de la lista de canciones actual para construir la cola.
-        let songSourceList = [];
-
-        if (!playlistViewContent.classList.contains('hidden') && currentPlaylistData) {
-            // Si estamos en la vista de una playlist, la cola es la lista de canciones de esa playlist.
-            songSourceList = currentPlaylistData.songs;
-        } else if (!searchViewContent.classList.contains('hidden')) {
-            // Si estamos en la vista de búsqueda, la cola son todas las canciones cargadas en la caché.
-            // Si hay un término de búsqueda, la cola deberían ser solo los resultados filtrados.
-            const searchTerm = searchInput.value.trim();
-            if (searchTerm !== '') {
-                // Re-filtramos para asegurar que la cola coincida con lo visible
-                songSourceList = loadedSongsCache.filter(s =>
-                    s.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    (s.artist || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    (s.album || "").toLowerCase().includes(searchTerm.toLowerCase())
-                );
-            } else {
-                songSourceList = loadedSongsCache;
-            }
+        // 2. Limpieza de la URL de Blob anterior (muy importante para la gestión de memoria).
+        // Cada vez que se crea una URL de objeto, se reserva memoria. Debemos liberarla.
+        if (currentObjectUrl) {
+            URL.revokeObjectURL(currentObjectUrl);
         }
-        // Actualizamos la cola global y el índice actual.
-        currentQueue = songSourceList;
-        currentQueueIndex = currentQueue.findIndex(s => s.id === song.id);
-
-        // Si no se encuentra la canción en la cola (caso improbable), la cola será solo esta canción.
-        if (currentQueueIndex === -1) {
-            currentQueue = [song];
-            currentQueueIndex = 0;
-        }
-
-        // Generamos la URL firmada de MinIO para la reproducción.
-        const playableUrl = getPresignedUrl(song.sourceUrl);
-
-        if (!playableUrl) {
-            showToast('No se pudo obtener la URL de la canción.', 'error');
-            return;
-        }
-
-        currentPlayingSong = song; // Guardamos la canción que está sonando.
-        audioPlayer.src = playableUrl; // Asignamos la URL al reproductor.
+        // 3. Informar al usuario que la canción está cargando.
+        // Con este método, la descarga completa debe finalizar antes de que comience la reproducción.
+        showToast('Cargando canción...', 'info', 2000);
+        setPlayerControlsEnabled(false); // Deshabilitamos controles mientras descarga.
 
         try {
-            await audioPlayer.play();
-            // Actualizamos toda la interfaz de usuario.
-            updatePlayerBarUI(song);
-            setPlayerControlsEnabled(true);
-            updateSongItemIcons();
-            updateSearchViewSongIcons();
+            const objectKey = song.sourceUrl;
+            const fileEndpointUrl = `${API_BASE_URL}/file/${objectKey}`;
+            const token = localStorage.getItem('authToken');
+
+            // 4. Usamos `fetch` para descargar el archivo, añadiendo el encabezado de autorización.
+            const response = await fetch(fileEndpointUrl, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                // Si el token es inválido o el archivo no se encuentra, el error se captura aquí.
+                throw new Error(`No se pudo descargar la canción. Estado: ${response.status}`);
+            }
+
+            // 5. Convertimos la respuesta en un "Blob", que son los datos crudos del archivo MP3.
+            const audioBlob = await response.blob();
+
+            // 6. Creamos una URL de objeto temporal a partir del Blob.
+            const playableUrl = URL.createObjectURL(audioBlob);
+            currentObjectUrl = playableUrl; // Guardamos la nueva URL para poder limpiarla después.
+
+            // 7. La lógica de la cola de reproducción
+            let songSourceList = [];
+            if (!playlistViewContent.classList.contains('hidden') && currentPlaylistData) {
+                songSourceList = currentPlaylistData.songs;
+            } else if (!searchViewContent.classList.contains('hidden')) {
+                const searchTerm = searchInput.value.trim().toLowerCase();
+                if (searchTerm !== '') {
+                    songSourceList = loadedSongsCache.filter(s =>
+                        s.title.toLowerCase().includes(searchTerm) ||
+                        (s.artist || "").toLowerCase().includes(searchTerm) ||
+                        (s.album || "").toLowerCase().includes(searchTerm)
+                    );
+                } else {
+                    songSourceList = loadedSongsCache;
+                }
+            }
+            currentQueue = songSourceList;
+            currentQueueIndex = currentQueue.findIndex(s => s.id === song.id);
+            if (currentQueueIndex === -1) {
+                currentQueue = [song];
+                currentQueueIndex = 0;
+            }
+
+            // 8. Asignación y Reproducción.
+            currentPlayingSong = song;
+            audioPlayer.src = playableUrl; // Asignamos la URL de Blob al reproductor.
+
+            // En lugar de `await`, usamos el evento `canplay` para saber cuándo está listo para reproducir.
+            audioPlayer.addEventListener('canplay', async () => {
+                try {
+                    await audioPlayer.play();
+
+                    // Actualizamos la UI solo cuando la reproducción comienza con éxito.
+                    updatePlayerBarUI(song);
+                    setPlayerControlsEnabled(true);
+                    updateSongItemIcons();
+                    updateSearchViewSongIcons();
+
+                    currentTimeEl.textContent = '0:00';
+                    progressSlider.value = 0;
+                } catch (playError) {
+                    console.error("Error en el aut-play después de la carga:", playError);
+                    showToast('No se pudo iniciar la reproducción.', 'error');
+                }
+            }, { once: true }); // { once: true } asegura que este listener se ejecute solo una vez.
 
         } catch (error) {
-            console.error("Error al intentar reproducir la canción:", error);
-            showToast('Error al reproducir la canción.', 'error');
+            console.error("Error al intentar cargar la canción:", error);
+            showToast('Hubo un problema al cargar la canción.', 'error');
             setPlayerControlsEnabled(false);
         }
-        // Reseteamos el tiempo y la barra de progreso para la nueva canción.
-        currentTimeEl.textContent = '0:00';
-        progressSlider.value = 0;
     }
-
 
     function playNextSongInQueue() {
         // Verificamos si hay una siguiente canción en la cola.
@@ -669,27 +715,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             allSongsContainer.innerHTML = `<p class="empty-results-message">${message}</p>`;
-        }
-    }
-
-
-    // Genera una URL firmada (presigned URL) para un objeto de canción en MinIO. 
-    // La clave del objeto guardada en la base de datos (ej: "song_9"). La URL completa y firmada, válida por 1 hora.
-    function getPresignedUrl(objectKey) {
-        if (!objectKey) {
-            return ''; // Si no hay clave, devuelve una URL vacía.
-        }
-
-        try {
-            const url = s3.getSignedUrl('getObject', {
-                Bucket: MINIO_BUCKET,
-                Key: objectKey,
-                Expires: 3600
-            });
-            return url;
-        } catch (error) {
-            console.error("Error al firmar la URL de MinIO:", error);
-            return '';
         }
     }
 
@@ -1118,6 +1143,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 await apiFetch(`/playlists/${playlistId}/songs/${songIdToAdd}`, 'POST');
 
                 showModalFeedback(`¡Añadida a "${playlistItem.textContent}"!`, 'success');
+                if (playlistId === currentOpenPlaylistId) {
+                    await refreshCurrentPlaylistView();
+                }
                 modalPlaylistList.classList.add('hidden');
 
             } catch (error) {
@@ -1159,12 +1187,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            songItem.classList.add('is-deleting');
-
             try {
                 await apiFetch(`/playlists/${currentOpenPlaylistId}/songs/${songId}`, 'DELETE');
                 showToast('Canción eliminada de la playlist', 'success');
-
+                await refreshCurrentPlaylistView();
                 songItem.style.opacity = '0';
                 setTimeout(() => {
                     songItem.remove();
