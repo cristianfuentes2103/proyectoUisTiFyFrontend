@@ -640,7 +640,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error("Error al intentar cargar la canción:", error);
-            showToast('Hubo un problema al cargar la canción.', 'error');
+            showToast('Debes iniciar sesión para reproducir canciones.', 'error');
             setPlayerControlsEnabled(false);
         }
     }
